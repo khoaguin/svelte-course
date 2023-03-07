@@ -1,3 +1,10 @@
 # Svelte & SvelteKit Course
 
-7. Svelte component basic structure
+Svelte component basic structure
+
+## Run
+
+```
+npm install
+npm run dev
+```
