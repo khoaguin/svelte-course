@@ -1,16 +1,12 @@
 <script>
-	let name = 'Svelte';
-	let img_src = 'https://svelte.dev/svelte-logo.svg';
-	let img_name = 'Svelte logo';
-	let string = 'Some <strong>string</strong> with <em>HTML</em> tags';
+	import Counter from './lib/Counter.svelte';
+	const props = {
+		maxCount: 10,
+		initialCount: 5
+	};
 </script>
 
-<h1>Hello {name.toLowerCase()}!</h1>
-<img src={img_src} alt={img_name} width="200" height="200" />
-<p>{@html string}</p>
+<Counter {...props} />
 
 <style>
-	h1 {
-		color: yellowgreen;
-	}
 </style>
