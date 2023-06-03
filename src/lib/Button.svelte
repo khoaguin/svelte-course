@@ -1,7 +1,7 @@
 <script>
 	export let size = 'large';
 	export let shadow = false;
-	export let bgColor = 'black';
+	export let bgColor = 'red';
 	export let textColor = 'white';
 	let isLeftHovered;
 </script>
