@@ -1,15 +1,15 @@
 <script>
-	export let size = 'large';
+	export let size = 'small';
 	export let shadow = false;
-	export let bgColor = 'red';
-	export let textColor = 'white';
+	export let bgColor = 'inherit';
+	export let textColor = 'inherit';
 	let isLeftHovered;
 </script>
 
 <button
 	on:click
-	style:background-color={bgColor}
-	style:color={textColor}
+	style:--buttonBgColor={bgColor}
+	style:--buttonTextColor={textColor}
 	class:size-lg={size == 'large'}
 	class:size-sm={size == 'small'}
 	class:has-left={$$slots.leftContent}

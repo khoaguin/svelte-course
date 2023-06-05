@@ -1,50 +1,58 @@
+<!-- JavaScript part -->
 <script>
 	import TodoList from './lib/TodoList.svelte';
 	import { v4 as uuid } from 'uuid';
-	import { tick } from 'svelte';
+	import { tick, onMount } from 'svelte';
 
 	let todoList;
 	let showList = true;
 
-	let todos = [
-		{
-			id: uuid(),
-			title: 'Todo 1',
-			completed: false
-		},
-		{
-			id: uuid(),
-			title: 'Todo 2',
-			completed: true
-		},
-		{
-			id: uuid(),
-			title: 'Todo 3',
-			completed: true
-		},
-		{
-			id: uuid(),
-			title:
-				'A long long long long long long long long long long long long long long long long long long todo',
-			completed: false
-		}
-	];
+	let todos = null;
+	let error = null;
+	let isLoading = false;
+	let isAdding = false;
 
-	$: console.log(todos);
+	onMount(() => {
+		loadTodos();
+	});
+
+	async function loadTodos() {
+		isLoading = true;
+		await fetch('https://jsonplaceholder.typicode.com/todos?_limit=10').then(async (response) => {
+			if (response.ok) {
+				todos = await response.json();
+			} else {
+				error = 'An error has occurred';
+			}
+		});
+		isLoading = false;
+	}
 
 	async function handleAddToDo(event) {
 		event.preventDefault();
-		todos = [
-			...todos,
-			{
-				id: uuid(),
+		isAdding = true;
+		await fetch('https://jsonplaceholder.typicode.com/todos', {
+			method: 'POST',
+			body: JSON.stringify({
 				title: event.detail.title,
 				completed: false
+			}),
+			headers: {
+				'Content-type': 'application/json; charset=UTF-8'
 			}
-		];
+		}).then(async (response) => {
+			if (response.ok) {
+				const todo = await response.json();
+				console.log(todo);
+				todos = [...todos, { ...todo, id: uuid() }];
+				todoList.clearInput();
+			} else {
+				alert("An error has occurred. Can't add the todo");
+			}
+		});
+		isAdding = false;
 		await tick();
-
-		todoList.clearInput();
+		todoList.focusInput();
 	}
 
 	function handleRemoveTodo(event) {
@@ -62,19 +70,26 @@
 	}
 </script>
 
+<!-- HTML part -->
 <label>
 	<input type="checkbox" bind:checked={showList} />
 	Show/Hide List
 </label>
 {#if showList}
-	<TodoList
-		{todos}
-		bind:this={todoList}
-		on:addtodo={handleAddToDo}
-		on:removetodo={handleRemoveTodo}
-		on:toggletodo={handleToggleToDo}
-	/>
+	<div style:max-width="400px">
+		<TodoList
+			{todos}
+			{error}
+			{isLoading}
+			disableAdding={isAdding}
+			bind:this={todoList}
+			on:addtodo={handleAddToDo}
+			on:removetodo={handleRemoveTodo}
+			on:toggletodo={handleToggleToDo}
+		/>
+	</div>
 {/if}
 
+<!-- CSS part -->
 <style>
 </style>
