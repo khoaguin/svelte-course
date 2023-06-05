@@ -11,6 +11,7 @@
 	let error = null;
 	let isLoading = false;
 	let isAdding = false;
+	let disabledItems = [];
 
 	onMount(() => {
 		loadTodos();
@@ -55,18 +56,54 @@
 		todoList.focusInput();
 	}
 
-	function handleRemoveTodo(event) {
-		// keep items with id different than the one in event.detail.id
-		todos = todos.filter((t) => t.id != event.detail.id);
+	async function handleRemoveTodo(event) {
+		const id = event.detail.id;
+		// handling the time when we are removing the item so that
+		// the user can't fetch another POST request during that time
+		if (disabledItems.includes(id)) return;
+		disabledItems = [...disabledItems, id];
+		await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+			method: 'DELETE'
+		}).then((response) => {
+			if (response.ok) {
+				// keep items with id different than the one in event.detail.id
+				todos = todos.filter((todo) => todo.id != event.detail.id);
+			} else {
+				alert("An error has occurred. Can't delete the todo");
+			}
+		});
+		disabledItems = disabledItems.filter((itemId) => itemId != id);
 	}
 
-	function handleToggleToDo(event) {
-		todos = todos.map((todo) => {
-			if (todo.id == event.detail.id) {
-				return { ...todo, completed: event.detail.value };
+	async function handleToggleToDo(event) {
+		const id = event.detail.id;
+		// handling the time when we are toggling the item so that
+		// the user can't fetch another POST request during that time
+		if (disabledItems.includes(id)) return;
+		disabledItems = [...disabledItems, id]; // push the item
+		await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+			method: 'PATCH',
+			body: JSON.stringify({
+				// title: event.detail.title,
+				completed: event.detail.value
+			}),
+			headers: {
+				'Content-type': 'application/json; charset=UTF-8'
 			}
-			return { ...todo };
+		}).then(async (response) => {
+			if (response.ok) {
+				const updatedTodo = await response.json();
+				todos = todos.map((todo) => {
+					if (todo.id == id) {
+						return updatedTodo;
+					}
+					return { ...todo };
+				});
+			} else {
+				alert("An error has occurred. Can't delete the todo");
+			}
 		});
+		disabledItems = disabledItems.filter((itemId) => itemId != id);
 	}
 </script>
 

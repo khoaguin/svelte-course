@@ -9,6 +9,7 @@
 	export let error = null;
 	export let isLoading = false;
 	export let disableAdding = false;
+	export let disabledItems = [];
 
 	let prevTodos = todos;
 	let inputText = '';
@@ -84,6 +85,7 @@
 										}}
 										type="checkbox"
 										checked={completed}
+										disabled={disabledItems.includes(id)}
 									/>
 									{title}
 								</label>
@@ -91,6 +93,7 @@
 									class="remove-todo-button"
 									aria-label="Remove todo: {title}"
 									on:click={() => handleRemoveTodo(id)}
+									disabled={disabledItems.includes(id)}
 								>
 									<span style:width="10px" style:display="inline-block">
 										<FaRegTrashAlt />
@@ -163,8 +166,12 @@
 						right: 10px;
 						cursor: pointer;
 						display: none;
+						&:disabled {
+							opacity: 0.4;
+							cursor: not-allowed;
+						}
 						:global(svg) {
-							fill: orange;
+							fill: red;
 						}
 					}
 					&:hover {
