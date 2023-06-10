@@ -3,6 +3,7 @@
 	import TodoList from './lib/TodoList.svelte';
 	import { v4 as uuid } from 'uuid';
 	import { tick, onMount } from 'svelte';
+	import { slide, blur } from 'svelte/transition';
 
 	let todoList;
 	let showList = true;
@@ -113,7 +114,15 @@
 	Show/Hide List
 </label>
 {#if showList}
-	<div style:max-width="400px">
+	<div
+		in:slide={{ duration: 700 }}
+		out:blur={{ amount: 10, duration: 700 }}
+		style:max-width="400px"
+		on:introstart={() => console.log('introstart')}
+		on:introend={() => console.log('introend')}
+		on:outrostart={() => console.log('outrostart')}
+		on:outroend={() => console.log('outroend')}
+	>
 		<TodoList
 			{todos}
 			{error}
@@ -128,26 +137,6 @@
 			let:index
 		>
 			<svelte:fragment slot="title">{index + 1} - {todo.title}</svelte:fragment>
-
-			<!-- one way to do thing -->
-			<!-- <Todo {todo} on:remove on:toggle /> -->
-
-			<!-- another way to do thing -->
-			<!-- {@const { id, completed, title } = todo}
-			<div>
-				<input
-					disabled={disabledItems.includes(id)}
-					on:input={(event) => {
-						event.currentTarget.checked = completed;
-						handleToggleTodo(id, !completed);
-					}}
-					type="checkbox"
-					checked={completed}
-				/>
-				{title}
-			</div> -->
-
-			<!-- using named slot -->
 		</TodoList>
 	</div>
 {/if}
