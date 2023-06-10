@@ -75,30 +75,35 @@
 					<p class="state-text">No todos yet</p>
 				{:else}
 					<ul>
-						{#each todos as { id, title, completed } (id)}
-							<li class:completed>
-								<label>
-									<input
-										on:input={(event) => {
-											event.currentTarget.checked = completed;
-											handleToggleTodo(id, !completed);
-										}}
-										type="checkbox"
-										checked={completed}
-										disabled={disabledItems.includes(id)}
-									/>
-									{title}
-								</label>
-								<button
-									class="remove-todo-button"
-									aria-label="Remove todo: {title}"
-									on:click={() => handleRemoveTodo(id)}
-									disabled={disabledItems.includes(id)}
-								>
-									<span style:width="10px" style:display="inline-block">
-										<FaRegTrashAlt />
-									</span>
-								</button>
+						{#each todos as todo, index (todo.id)}
+							{@const { id, completed, title } = todo}
+							<li>
+								<slot {todo} {index} {handleToggleTodo}>
+									<div class:completed>
+										<label>
+											<input
+												on:input={(event) => {
+													event.currentTarget.checked = completed;
+													handleToggleTodo(id, !completed);
+												}}
+												type="checkbox"
+												checked={completed}
+												disabled={disabledItems.includes(id)}
+											/>
+											<slot name="title">{index}</slot>
+										</label>
+										<button
+											class="remove-todo-button"
+											aria-label="Remove todo: {title}"
+											on:click={() => handleRemoveTodo(id)}
+											disabled={disabledItems.includes(id)}
+										>
+											<span style:width="10px" style:display="inline-block">
+												<FaRegTrashAlt />
+											</span>
+										</button>
+									</div>
+								</slot>
 							</li>
 						{/each}
 					</ul>
@@ -135,7 +140,7 @@
 				margin: 0;
 				padding: 10px;
 				list-style: none;
-				li {
+				li > div {
 					margin-bottom: 5px;
 					display: flex;
 					align-items: center;

@@ -29,7 +29,7 @@
 		isLoading = false;
 	}
 
-	async function handleAddToDo(event) {
+	async function handleAddTodo(event) {
 		event.preventDefault();
 		isAdding = true;
 		await fetch('https://jsonplaceholder.typicode.com/todos', {
@@ -75,7 +75,7 @@
 		disabledItems = disabledItems.filter((itemId) => itemId != id);
 	}
 
-	async function handleToggleToDo(event) {
+	async function handleToggleTodo(event) {
 		const id = event.detail.id;
 		// handling the time when we are toggling the item so that
 		// the user can't fetch another POST request during that time
@@ -120,10 +120,35 @@
 			{isLoading}
 			disableAdding={isAdding}
 			bind:this={todoList}
-			on:addtodo={handleAddToDo}
+			on:addtodo={handleAddTodo}
 			on:removetodo={handleRemoveTodo}
-			on:toggletodo={handleToggleToDo}
-		/>
+			on:toggletodo={handleToggleTodo}
+			let:handleToggleTodo
+			let:todo
+			let:index
+		>
+			<svelte:fragment slot="title">{index + 1} - {todo.title}</svelte:fragment>
+
+			<!-- one way to do thing -->
+			<!-- <Todo {todo} on:remove on:toggle /> -->
+
+			<!-- another way to do thing -->
+			<!-- {@const { id, completed, title } = todo}
+			<div>
+				<input
+					disabled={disabledItems.includes(id)}
+					on:input={(event) => {
+						event.currentTarget.checked = completed;
+						handleToggleTodo(id, !completed);
+					}}
+					type="checkbox"
+					checked={completed}
+				/>
+				{title}
+			</div> -->
+
+			<!-- using named slot -->
+		</TodoList>
 	</div>
 {/if}
 
