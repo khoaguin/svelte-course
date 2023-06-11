@@ -3,7 +3,9 @@
 	import TodoList from './lib/TodoList.svelte';
 	import { v4 as uuid } from 'uuid';
 	import { tick, onMount } from 'svelte';
-	import { slide, blur } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
+	import spin from './lib/transitions/spin';
+	import fade from './lib/transitions/fade';
 
 	let todoList;
 	let showList = true;
@@ -46,7 +48,7 @@
 			if (response.ok) {
 				const todo = await response.json();
 				console.log(todo);
-				todos = [...todos, { ...todo, id: uuid() }];
+				todos = [{ ...todo, id: uuid() }, ...todos];
 				todoList.clearInput();
 			} else {
 				alert("An error has occurred. Can't add the todo");
@@ -114,31 +116,32 @@
 	Show/Hide List
 </label>
 {#if showList}
-	<div
-		in:slide={{ duration: 700 }}
-		out:blur={{ amount: 10, duration: 700 }}
-		style:max-width="400px"
-		on:introstart={() => console.log('introstart')}
-		on:introend={() => console.log('introend')}
-		on:outrostart={() => console.log('outrostart')}
-		on:outroend={() => console.log('outroend')}
-	>
+	<div transition:spin={{ spin: 1, duration: 800 }} style:max-width="800px">
+		<!-- <div transition:fade={{ duration: 1000 }} style:max-width="800px"> -->
 		<TodoList
 			{todos}
 			{error}
 			{isLoading}
 			disableAdding={isAdding}
+			scrollOnAdd="top"
 			bind:this={todoList}
 			on:addtodo={handleAddTodo}
 			on:removetodo={handleRemoveTodo}
 			on:toggletodo={handleToggleTodo}
-			let:handleToggleTodo
 			let:todo
 			let:index
 		>
 			<svelte:fragment slot="title">{index + 1} - {todo.title}</svelte:fragment>
 		</TodoList>
 	</div>
+
+	{#if todos}
+		<p transition:fade={{ duration: 1000 }}>
+			Number of todos: {#key todos.length}
+				<span style:display="inline-block" in:fly|local={{ y: -10 }}>{todos.length}</span>
+			{/key}
+		</p>
+	{/if}
 {/if}
 
 <!-- CSS part -->
