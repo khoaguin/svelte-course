@@ -1,25 +1,12 @@
 <script>
-	import longpress from './lib/actions/longpress';
+	import tippy from './lib/actions/tippy';
 
-	let showButton = true;
-	let duration = 1000;
+	let content = 'Hello';
 </script>
 
-<label><input type="checkbox" bind:checked={showButton} /> Toggle</label>
+<input bind:value={content} />
 
-<label>
-	<input type="range" bind:value={duration} max={4000} step={100} />{duration}ms
-</label>
+<button use:tippy={{ content, placement: 'right', theme: 'light' }}>Button</button>
 
-{#if showButton}
-	<button
-		use:longpress={{ duration }}
-		on:longpress={() => {
-			alert('pressed');
-		}}>Longpress here</button
-	>
-{/if}
-
-<!-- CSS part -->
 <style>
 </style>
