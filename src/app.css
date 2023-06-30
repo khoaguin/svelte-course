@@ -1,6 +1,10 @@
 :root {
     --buttonBgColor: rgb(244, 223, 223);
     --buttonTextColor: rgb(255, 255, 255);
-    background-color: #393535;
-    color: #fff;
+
+}
+
+body {
+    background-color: var(--backgroundColor);
+    color: var(--textColor);
 }

@@ -1,9 +1,11 @@
-import {writable} from 'svelte/store';
+import { writable } from 'svelte/store';
 
-const settings = writable({
-    colorScheme: "dark",
-    language: "en",
-    fontSize: 12,
-});
+const settings = writable(
+  {
+    colorScheme: 'dark',
+    language: 'en',
+    fontSize: 12
+  }
+);
 
 export default settings;

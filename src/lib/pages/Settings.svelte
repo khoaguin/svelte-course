@@ -19,6 +19,3 @@
 <label>
 	<input type="radio" bind:group={$settings.colorScheme} name="colorScheme" value="light" /> Light
 </label>
-<div>
-	{$settings.colorScheme}
-</div>
