@@ -4,13 +4,30 @@
 
 <h2>Settings</h2>
 
-<!-- a button to update store's value -->
+<div>
+	language: {$settings.language}
+</div>
+
 <button
 	on:click={() => {
 		// if the colorScheme is dark, set it to light, otherwise set it to dark
-		$settings.colorScheme = $settings.colorScheme == 'dark' ? 'light' : 'dark';
+		settings.toggleColorSetting();
 	}}>Toggle Color Scheme</button
 >
+
+<button
+	on:click={() => {
+		settings.updateSetting('language', 'vi');
+	}}
+	>Update Language
+</button>
+
+<button
+	on:click={() => {
+		settings.reset();
+	}}
+	>Reset Settings
+</button>
 
 <!-- we can also bind inputs to store values -->
 <label>

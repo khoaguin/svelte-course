@@ -1,11 +1,34 @@
 import { writable } from 'svelte/store';
 
-const settings = writable(
-  {
-    colorScheme: 'dark',
-    language: 'en',
-    fontSize: 12
-  }
-);
+const defaultSettings = {
+  colorScheme: 'light',
+  language: 'en',
+  fontSize: 12
+};
 
-export default settings;
+function createSettingsStore() {
+  const {subscribe, set, update} = writable({
+    ...defaultSettings,
+  });
+  return {
+    subscribe,
+    set,
+    update,
+    updateSetting: (settings, value) => {
+      update((settings) => ({
+        ...settings,
+        language: settings.language == 'vi' ? 'en' : 'vi'
+      }));
+    },
+    toggleColorSetting: () => {
+      update((settings) => ({
+        ...settings,
+        colorScheme: settings.colorScheme == 'dark' ? 'light' : 'dark'}));
+    },
+    reset: () => {
+      set({...defaultSettings});
+    }
+  };
+}
+
+export default createSettingsStore();
