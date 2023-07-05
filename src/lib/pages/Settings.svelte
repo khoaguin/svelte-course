@@ -1,12 +1,9 @@
 <script>
 	import settings from '../stores/settings';
+	import direction from '../stores/direction';
 </script>
 
 <h2>Settings</h2>
-
-<div>
-	language: {$settings.language}
-</div>
 
 <button
 	on:click={() => {
@@ -29,6 +26,14 @@
 	>Reset Settings
 </button>
 
+<br />
+language: {$settings.language}
+<br />
+reading direction: {$direction}
+<br />
+theme: {$settings.colorScheme}
+<br />
+
 <!-- we can also bind inputs to store values -->
 <label>
 	<input type="radio" bind:group={$settings.colorScheme} name="colorScheme" value="dark" /> Dark
@@ -36,3 +41,8 @@
 <label>
 	<input type="radio" bind:group={$settings.colorScheme} name="colorScheme" value="light" /> Light
 </label>
+
+<select bind:value={$settings.language}>
+	<option value="en">English</option>
+	<option value="vi">Vietnamese</option>
+</select>

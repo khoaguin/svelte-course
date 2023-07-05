@@ -15,7 +15,7 @@
 	{#if $settings.colorScheme === 'dark'}
 		<style>
 			:root {
-				--backgroundColor: black;
+				--backgroundColor: rgb(13, 20, 35);
 				--textColor: white;
 			}
 		</style>
