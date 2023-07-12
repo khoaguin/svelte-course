@@ -24,9 +24,10 @@
 <svelte:window on:hashchange={onRouteChange} />
 
 <nav>
-	<a href="#/">Home</a>
-	<a href="#/settings">Settings</a>
+	<a style="font-size:18px" href="#/">Home</a>
+	<a style="font-size:18px" href="#/settings">Settings</a>
 </nav>
+<br />
 
 {#if page == 'home'}
 	<Home />
