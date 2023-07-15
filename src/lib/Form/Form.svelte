@@ -10,9 +10,9 @@
 	setContext(formkey, formStore);
 </script>
 
-<pre>
+<!-- <pre>
 {JSON.stringify($formStore, null, 2)}
-</pre>
+</pre> -->
 <form
 	on:submit|preventDefault={() => {
 		if (Object.keys($formStore.errors).length == 0) {
