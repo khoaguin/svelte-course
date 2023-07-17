@@ -1,20 +1,36 @@
-<script>
-	export let src = undefined;
+<script context="module">
+	let allVideos = new Set();
 
-	let paused = true;
-	let currentTime = 0;
-	let volume = 0;
+	export function pauseAllVideos() {
+		allVideos.forEach((_video) => {
+			_video.pause();
+		});
+	}
+
+	export function playAllVideos() {
+		allVideos.forEach((_video) => {
+			_video.play();
+		});
+	}
 </script>
 
-<video class:playing={!paused} {src} controls muted bind:paused bind:volume bind:currentTime />
+<script>
+	import { onDestroy, onMount } from 'svelte';
 
-<button
-	on:click={() => {
-		paused = !paused;
-	}}>{paused ? 'Play' : 'Pause'}</button
->
-<p>current time: {currentTime}</p>
-<p>volume: {volume}</p>
+	export let src = undefined;
+
+	let video;
+	let paused = true;
+
+	onMount(() => {
+		allVideos.add(video);
+	});
+	onDestroy(() => {
+		allVideos.delete(video);
+	});
+</script>
+
+<video bind:this={video} class:playing={!paused} {src} controls muted bind:paused />
 
 <style>
 	video.playing {
