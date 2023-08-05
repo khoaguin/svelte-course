@@ -1,14 +1,6 @@
 {
-	"/(frontend)": [],
-	"/(admin)": [],
 	"/": [],
-	"/(frontend)/[[lang]]/about": [],
-	"/(frontend)/file": [],
-	"/(frontend)/file/[id]": [],
-	"/(frontend)/file/[id]/[...path=path]/edit": [],
-	"/(frontend)/file/[id]/[...path=path]": [],
-	"/(frontend)/product/[id=int]": [],
-	"/(admin)/settings": [],
-	"/(admin)/settings/general": [],
-	"/(admin)/settings/profile": []
+	"/products": [
+		"src/routes/products/+page.ts"
+	]
 }

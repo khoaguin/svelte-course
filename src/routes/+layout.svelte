@@ -1,5 +1,6 @@
-<div style:background="grey">
-	<slot />
+<nav>
+	<a href="/">Home</a>
+	<a href="/products">Products</a>
+</nav>
 
-	<footer style:margin-top="60px">All rights reserved.</footer>
-</div>
+<slot />
