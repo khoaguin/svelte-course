@@ -1,6 +1,15 @@
 {
-	"/": [],
+	"/": [
+		"src/routes/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
 	"/products": [
-		"src/routes/products/+page.ts"
+		"src/routes/products/+page.ts",
+		"src/routes/products/+page.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/product/[id]": [
+		"src/routes/product/[id]/+page.server.ts",
+		"src/routes/+layout.server.ts"
 	]
 }
